@@ -11,39 +11,47 @@ import { PokemonService } from '../pokemon.service';
 export class PokemonFormComponent implements OnInit {
   @Input() pokemon!: Pokemon;
   types: string[] | undefined
+  isAddForm!: boolean
 
   constructor(private pokemonService: PokemonService, private router: Router) { }
 
   ngOnInit(): void {
     this.types = this.pokemonService.getPokemonTypeList()
+    this.isAddForm = this.router.url.includes('add')
   }
 
-  hasType(type: string): boolean{ return this.pokemon.types.includes(type) }
+  hasType(type: string): boolean { return this.pokemon.types.includes(type) }
 
-  selectType($event: Event, type: string){
+  selectType($event: Event, type: string) {
     const isChecked: boolean = ($event.target as HTMLInputElement).checked
 
-    if(isChecked){
+    if (isChecked) {
       this.pokemon.types.push(type)
-    }else{
-      const index= this.pokemon.types.indexOf(type)
+    } else {
+      const index = this.pokemon.types.indexOf(type)
       this.pokemon.types.splice(index, 1)
     }
   }
 
-  isTypesValid(type: string): boolean{
-    if(this.pokemon.types.length == 1 && this.hasType(type))
+  isTypesValid(type: string): boolean {
+    if (this.pokemon.types.length == 1 && this.hasType(type))
       return false
-    
-    if(this.pokemon.types.length > 2 && !this.hasType(type))
+
+    if (this.pokemon.types.length > 2 && !this.hasType(type))
       return false
 
     return true
   }
 
-  onSubmit(){
-    console.log('Submit Forms')
-    this.router.navigate(['/pokemon', this.pokemon.id])
+  onSubmit() {
+    if (this.isAddForm) {
+      this.pokemonService.addPokemon(this.pokemon)
+        .subscribe((pokemon: Pokemon) => this.router.navigate(['/pokemon', pokemon.id]))
+    } else {
+      this.pokemonService.updatePokemon(this.pokemon)
+        .subscribe(() => this.router.navigate(['/pokemon', this.pokemon.id]))
+    }
+
   }
 
 }

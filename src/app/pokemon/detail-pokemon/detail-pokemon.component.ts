@@ -17,7 +17,12 @@ export class DetailPokemonComponent implements OnInit {
     const pokemonId: string | null = this.route.snapshot.paramMap.get('id')
 
     if (pokemonId)
-      this.pokemon = this.pokemonService.getPokemnById(Number(pokemonId))
+      this.pokemonService.getPokemnById(Number(pokemonId)).subscribe((pokemon) => this.pokemon = pokemon)
+  }
+
+  deletePokemon(pokemon: Pokemon){
+    this.pokemonService.deletePokemonById(pokemon.id)
+      .subscribe(() => this.goToPokemonList())
   }
 
   goToPokemonList() {
