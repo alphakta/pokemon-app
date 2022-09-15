@@ -72,4 +72,6 @@
     </div>
   </div>
 </form>
-<h3 *ngIf="!pokemon" class="center">Aucun pokémon à éditer...</h3>
+<div class="center">
+  <app-loader *ngIf="!pokemon"></app-loader>
+</div>

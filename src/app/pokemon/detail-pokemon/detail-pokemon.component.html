@@ -44,4 +44,6 @@
         </div>
     </div>
 </div>
-<h4 *ngIf='!pokemon' class="center">Aucun pokémon à afficher !</h4>
+<div class="center">
+    <app-loader *ngIf="!pokemon"></app-loader>
+</div>

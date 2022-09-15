@@ -1,5 +1,9 @@
 <div class='container'>
     <div class="row">
+        <app-search-pokemon></app-search-pokemon>
+        <div *ngIf="!pokemonList" class="center">
+            <app-loader></app-loader>
+        </div>
         <div *ngFor='let pokemon of pokemonList' class="col s6 m4">
             <div (click)="goToPokemon(pokemon)" class="card horizontal" pkmnBorderCard>
                 <div class="card-image">
